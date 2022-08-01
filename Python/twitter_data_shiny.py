@@ -43,9 +43,12 @@ def server(input, output, session):
         avg_int = pd.melt(avg_int, id_vars = input.x())
         plot = (gg.ggplot(avg_int, gg.aes(input.x(), 'value', fill = 'variable')) +
                     gg.geom_col(position = 'dodge') +
+                    gg.xlab(input.x()) +
                     gg.ylab("Average Interactions") +
+                    gg.scale_fill_brewer(type = "qual", palette = "Dark2") +
                     gg.theme_classic())
         return plot
     return server
     
 app = App(app_ui, server, debug = True)
+
