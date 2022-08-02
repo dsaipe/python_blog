@@ -28,10 +28,16 @@ app_ui = ui.page_fluid(
                                        'hour_posted': 'Hour',
                                        'media_type': 'Media'},
                             selected = 'year'),
+            ui.input_numeric(id = "num", 
+                             label = "Enter a number between 0 and 881", 
+                             value = 0,
+                             min = 0,
+                             max = 881)
             ),
         ui.panel_main(
             ui.output_plot("bar"),
-            ui.output_plot("scatter")
+            ui.output_plot("scatter"),
+            ui.output_table("table")
             )
         )
     )
@@ -61,6 +67,12 @@ def server(input, output, session):
                     gg.scale_y_log10() +
                     gg.theme_classic())
         return plot
+    @output
+    @render.table
+    def table():
+        cols = jr.filter(['created_at', 'text', 'favorite_count', 'retweet_count'])
+        first_n = cols.head(input.num())
+        return first_n
     return server
     
 app = App(app_ui, server, debug = True)
