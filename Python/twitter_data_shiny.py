@@ -23,7 +23,8 @@ choices = ({'year': 'Year',
            'hour_posted': 'Hour',
            'media_type': 'Media'})
 
-app_ui = ui.page_flui(
+app_ui = ui.page_fluid(
+    ui.panel_title("@jumping_uk Twitter Data"),
     ui.layout_sidebar(
         ui.panel_sidebar(
             ui.input_select(id = "x",
