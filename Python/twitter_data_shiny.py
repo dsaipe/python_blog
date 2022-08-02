@@ -18,7 +18,12 @@ jr = jr.astype(object)
 #rstats = rstats.filter(['screen_name', 'created_at', 'text', 'favorite_count',
 #                        'retweet_count'])
 
-app_ui = ui.page_fluid(
+choices = ({'year': 'Year',
+           'day': 'Day',
+           'hour_posted': 'Hour',
+           'media_type': 'Media'})
+
+app_ui = ui.page_flui(
     ui.layout_sidebar(
         ui.panel_sidebar(
             ui.input_select(id = "x",
@@ -28,8 +33,8 @@ app_ui = ui.page_fluid(
                                        'hour_posted': 'Hour',
                                        'media_type': 'Media'},
                             selected = 'year'),
-            ui.input_numeric(id = "num", 
-                             label = "Enter a number between 0 and 881", 
+            ui.input_numeric(id = "num",
+                             label = "Display @jumping_uk tweets", 
                              value = 0,
                              min = 0,
                              max = 881)
@@ -50,9 +55,11 @@ def server(input, output, session):
         avg_int = pd.melt(avg_int, id_vars = input.x())
         plot = (gg.ggplot(avg_int, gg.aes(input.x(), 'value', fill = 'variable')) +
                     gg.geom_col(position = 'dodge') +
-                    gg.xlab(input.x()) +
+                    gg.xlab(str.title(choices[input.x()])) +
                     gg.ylab("Average Interactions") +
-                    gg.scale_fill_brewer(type = "qual", palette = "Dark2") +
+                    gg.scale_fill_brewer(type = "qual", palette = "Dark2",
+                                         name = "Interaction",
+                                         labels = (["Favourite Count", "Retweet Count"])) +
                     gg.theme_classic())
         return plot
     @output
