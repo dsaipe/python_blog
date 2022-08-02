@@ -12,6 +12,7 @@ import matplotlib.pyplot as plt
 import plotnine as gg
 
 jr = pd.read_csv('Data/jr_shiny.csv')
+jr = jr.astype(object)
 
 #rstats = pd.read_csv('rstats_hashtag.csv')
 #rstats = rstats.filter(['screen_name', 'created_at', 'text', 'favorite_count',
@@ -26,10 +27,11 @@ app_ui = ui.page_fluid(
                                        'day': 'Day',
                                        'hour_posted': 'Hour',
                                        'media_type': 'Media'},
-                            selected = 'year')
+                            selected = 'year'),
             ),
         ui.panel_main(
-            ui.output_plot("bar")
+            ui.output_plot("bar"),
+            ui.output_plot("scatter")
             )
         )
     )
@@ -46,6 +48,17 @@ def server(input, output, session):
                     gg.xlab(input.x()) +
                     gg.ylab("Average Interactions") +
                     gg.scale_fill_brewer(type = "qual", palette = "Dark2") +
+                    gg.theme_classic())
+        return plot
+    @output
+    @render.plot 
+    def scatter():
+        plot = (gg.ggplot(jr, gg.aes('retweet_count', 'favorite_count', colour = input.x())) +
+                    gg.geom_point() +
+                    gg.xlab("Number of retweets") +
+                    gg.ylab("Number of likes") +
+                    gg.scale_fill_hue(palette = "Dark2") +
+                    gg.scale_y_log10() +
                     gg.theme_classic())
         return plot
     return server
