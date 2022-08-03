@@ -63,6 +63,8 @@ def server(input, output, session):
                                          name = "Interaction",
                                          labels = (["Favourite Count", "Retweet Count"])) +
                     gg.theme_classic())
+        if input.x() == 'day':
+            plot = plot + gg.scale_x_discrete(labels = (["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]))
         return plot
     @output
     @render.text
