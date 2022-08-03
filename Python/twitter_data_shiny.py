@@ -20,7 +20,7 @@ jr = jr.astype(object)
 
 choices = ({'year': 'Year',
            'day': 'Day',
-           'hour_posted': 'Hour',
+           'hour': 'Hour',
            'media_type': 'Media'})
 
 app_ui = ui.page_fluid(
@@ -28,10 +28,10 @@ app_ui = ui.page_fluid(
     ui.layout_sidebar(
         ui.panel_sidebar(
             ui.input_select(id = "x",
-                            label = "Variable",
+                            label = "X-axis Variable",
                             choices = {'year': 'Year',
                                        'day': 'Day',
-                                       'hour_posted': 'Hour',
+                                       'hour': 'Hour',
                                        'media_type': 'Media'},
                             selected = 'year'),
             ui.input_slider(id = "num",
