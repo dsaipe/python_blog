@@ -35,13 +35,14 @@ app_ui = ui.page_fluid(
                                        'media_type': 'Media'},
                             selected = 'year'),
             ui.input_numeric(id = "num",
-                             label = "Display @jumping_uk tweets", 
+                             label = "How many tweets would you like to view?", 
                              value = 0,
                              min = 0,
                              max = 881)
             ),
         ui.panel_main(
             ui.output_plot("bar"),
+            ui.output_text("text"),
             ui.output_table("table")
             )
         )
@@ -64,9 +65,22 @@ def server(input, output, session):
                     gg.theme_classic())
         return plot
     @output
+    @render.text
+    def text():
+        if input.num() == 0:
+            return "Displaying no @jumping_uk tweets:"
+        elif input.num() == 1:
+            return "Displaying the most recent @jumping_uk tweet:"
+        else:
+            return f"Displaying the {input.num()} most recent @jumping_uk tweets:"
+    @output
     @render.table
     def table():
         cols = jr.filter(['created_at', 'text', 'favorite_count', 'retweet_count'])
+        cols.rename(columns = {'created_at': 'Date', 'text': 'Text', 
+                               'favorite_count': 'Likes', 'retweet_count': 'Retweets'},
+                    inplace = True)
+        pd.set_option('colheader_justify', 'left')
         first_n = cols.head(input.num())
         return first_n
     return server
