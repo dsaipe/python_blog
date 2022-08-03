@@ -34,7 +34,7 @@ app_ui = ui.page_fluid(
                                        'hour_posted': 'Hour',
                                        'media_type': 'Media'},
                             selected = 'year'),
-            ui.input_numeric(id = "num",
+            ui.input_slider(id = "num",
                              label = "How many tweets would you like to view?", 
                              value = 0,
                              min = 0,
