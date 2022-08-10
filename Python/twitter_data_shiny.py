@@ -9,7 +9,7 @@ from shiny import App, ui, render
 import pandas as pd
 import plotnine as gg
 
-jr = pd.read_csv("Data/jr_shiny.csv")
+jr = pd.read_csv("jr_shiny.csv")
 jr = jr.astype({"year": "object", "day": "object", "hour": "object"})
 
 choices_select = {"year": "Year", "day": "Day", "hour": "Hour", "media_type": "Media"}
