@@ -29,9 +29,11 @@ The [@jumping_uk](https://www.twitter.com/jumping_uk) Twitter analysis project a
 
 # Creating a Dashboard
 
+Shiny apps consist of a **user interface (UI)**, and a **server function**. We will go through these one at a time. 
+
 ## User Interface 
 
-First, we need to create the **user interface (UI)**. The UI takes a range of input and output functions, and defines what users will see when they visit the dashboard. 
+First, we need to create the user interface (UI). The UI takes a range of input and output functions, and defines what users will see when they visit the dashboard. 
 
 ```{python}
 from shiny import ui
@@ -110,7 +112,7 @@ app_ui = ui.page_fluid(
 from shiny import render 
 ```
 
-As per, our **server function** will take three arguments: `input`, `output`, and `session`. When defining outputs within our server function, we want to define a function that matches the `id` of its corresponding output function in the UI. We preceed this function with decorators `@output` and `@render.*`. The render decorator should match the output function it's referring to. For a plot we will use `@render.plot`, for a table `@render.table` etc. The names may not always be the same though. If we want to call an input in our server function, we use `input.id()` with the corresponding inputs `id`. 
+As per, our server function will take three arguments: `input`, `output`, and `session`. When defining outputs within our server function, we want to define a function that matches the `id` of its corresponding output function in the UI. We preceed this function with decorators `@output` and `@render.*`. The render decorator should match the output function it's referring to. For a plot we will use `@render.plot`, for a table `@render.table` etc. The names may not always be the same though. If we want to call an input in our server function, we use `input.id()` with the corresponding inputs `id`. 
 
 We can now design our outputs in the server function. I have used [`pandas`](https://pandas.pydata.org/) for data manipulation, and [`plotnine`](https://plotnine.readthedocs.io/en/stable/#) for visualisation. Having done all this, our server function is as follows. 
 
@@ -190,4 +192,3 @@ The `run` command will preview our app, and `--reload` will reload the app whene
 The arrival of Shiny to Python will open up the framework to a whole new cohort of users, myself included! Whilst I have found grasping the basic concepts to be relatively straightforward. I have found learning resources to be pretty much limited to the [API](https://shiny.rstudio.com/py/api/). Getting past the core concepts may be more challenging, particularly (I imagine) for users with no experience in [Shiny for R](https://shiny.rstudio.com/), due to the lack of online reading material. We can also expect changes to be made in the coming months, with [Shiny for Python](https://shiny.rstudio.com/py/) currently being in Alpha. However, with Shiny being such a popular framework amongst R users, the expansion of it to Python users is very exciting, and I look forward to seeing how it develops in the future. 
 
 You can view or edit the dashboard I created [here](insert-link-here).
-
