@@ -29,11 +29,11 @@ The [@jumping_uk](https://www.twitter.com/jumping_uk) Twitter analysis project a
 
 # Creating a Dashboard
 
-Shiny apps consist of a **user interface (UI)**, and a **server function**. We will go through these one at a time. 
+You will now know that Shiny apps consist of a **user interface (UI)**, and a **server function**. We will go through developing these one at a time. 
 
 ## User Interface 
 
-First, we need to create the user interface (UI). The UI takes a range of input and output functions, and defines what users will see when they visit the dashboard. 
+First, we need to create the user interface. The UI takes a range of input and output functions, and defines what users will see when they visit the dashboard. 
 
 ```{python}
 from shiny import ui
@@ -63,17 +63,18 @@ Now, we are going to put some input and output functions into our UI. These foll
   - `ui.input_*` for inputs
   - `ui.output_*` for outputs. 
 
-Easy, right? 
+Simple, right? 
 
-For my Twitter dashboard, I want a plot that shows how different factors affect the number of interactions a tweet receives. I also want a table that shows the most recent tweets posted by [@jumping_uk](https://www.twitter.com/jumping_uk). For this, I will be using `ui.output_plot()` and `ui.output_table()` respectively - like I said, predictable. The only argument required for output functions is the `id`, which we will call later, in the server function. 
+For my Twitter dashboard, I want a plot that will show how different factors affect the number of interactions a tweet receives. I also want a table that will show the most recent tweets posted by [@jumping_uk](https://www.twitter.com/jumping_uk). For this, I will be using `ui.output_plot()` and `ui.output_table()` respectively - like I said, guessable. The only argument required for an output function is the `id`, which we will call later, in the server function. 
 
-Now we will choose some inputs. I want the user to be able to change the x-axis variable on the plot so they can see how different factors affect interaction. For this, I'll use `ui.input_select()`. This gives a drop down menu where the user can choose one option. I'll also add `ui.input_numeric()`, so the user can choose how many tweets they want to see in the table. We can also use `ui.input_checkbox_group()` so the user can choose which factors they want to see in the table. I'll wrap this input in `ui.panel_conditional()`, so that it only appears if a certain condition is satisfied (in our case if the user choses to view any tweets at all). All input functions require:
+Now we will choose some inputs. I want the user to be able to change the x-axis variable on the plot so they can see how each factor affects interactions. For this, I'll use `ui.input_select()`. This gives a drop down menu where the user will choose one option. I'll also add `ui.input_numeric()`, so the user can choose how many tweets they want to see in the table. We can also use `ui.input_checkbox_group()` so the user can choose which factors they want to see in the table. This input I'll wrap in `ui.panel_conditional()`, so that it only appears if a certain condition is satisfied (in our case if the user choses to view any tweets at all). All input functions require:
+
   - `id`: which we will use to call our inputs in the server function  
   - `label`: what the input will be labelled as to the viewer.  
   
-Many functions will have additional arguments, such as minimum and maximum values for a numeric input. 
+Many functions will have additional arguments, such as `min` and `max` values for numeric inputs, or `choices` and `selected` for inputs where the user needs to make a selection. 
 
-Similarly to the layout functions, remember to include commas between your input functions and output functions. Having done all this, our UI is now complete!
+As is with the layout and panel functions, remember to include commas between your input functions and output functions. Our UI is now complete!
 
 ```{python}
 app_ui = ui.page_fluid(
@@ -114,11 +115,16 @@ from shiny import render
 
 As per, our server function will take three arguments: `input`, `output`, and `session`. When defining outputs within our server function, we want to define a function that matches the `id` of its corresponding output function in the UI. We preceed this function with decorators `@output` and `@render.*`. The render decorator should match the output function it's referring to. For a plot we will use `@render.plot`, for a table `@render.table` etc. The names may not always be the same though. If we want to call an input in our server function, we use `input.id()` with the corresponding inputs `id`. 
 
-We can now design our outputs in the server function. I have used [`pandas`](https://pandas.pydata.org/) for data manipulation, and [`plotnine`](https://plotnine.readthedocs.io/en/stable/#) for visualisation. Having done all this, our server function is as follows. 
+We can now design our outputs in the server function. I have used [`pandas`](https://pandas.pydata.org/) for data manipulation, and [`plotnine`](https://plotnine.readthedocs.io/en/stable/#) for visualisation. 
+
+Having done all this, our server function is as follows. 
 
 ```{python}
 import pandas as pd
 import plotnine as gg
+
+jr = pd.read_csv("jr_shiny.csv")
+jr = jr.astype({"year": "object", "day": "object", "hour": "object"})
 
 def server(input, output, session):
     @output
@@ -185,10 +191,10 @@ We can then run our app.
 shiny run --reload twitter_data_shiny.py
 ```
 
-The `run` command will preview our app, and `--reload` will reload the app whenever we make changes to the file. 
+The `run` command will preview our app, and `--reload` will reload the app whenever we make changes to our code. 
 
 # Reflections 
 
-The arrival of Shiny to Python will open up the framework to a whole new cohort of users, myself included! Whilst I have found grasping the basic concepts to be relatively straightforward. I have found learning resources to be pretty much limited to the [API](https://shiny.rstudio.com/py/api/). Getting past the core concepts may be more challenging, particularly (I imagine) for users with no experience in [Shiny for R](https://shiny.rstudio.com/), due to the lack of online reading material. We can also expect changes to be made in the coming months, with [Shiny for Python](https://shiny.rstudio.com/py/) currently being in Alpha. However, with Shiny being such a popular framework amongst R users, the expansion of it to Python users is very exciting, and I look forward to seeing how it develops in the future. 
+The arrival of Shiny to Python will open up the framework to a whole new cohort of users, myself included! Whilst I have found grasping the basic concepts to be relatively straightforward. I have found learning resources to be pretty much limited to the [API](https://shiny.rstudio.com/py/api/). Advancing past the core concepts may be more challenging, particularly (I imagine) for users with no experience in [Shiny for R](https://shiny.rstudio.com/), due to the lack of online reading material. We can also expect changes to be made in the coming months, with [Shiny for Python](https://shiny.rstudio.com/py/) currently being in Alpha. However, with Shiny being such a popular framework amongst R users, the expansion of it to Python is very exciting, and I look forward to seeing how it develops in the future. 
 
-You can view or edit the dashboard I created [here](insert-link-here).
+You can view and edit the dashboard I created [here](insert-link-here).
