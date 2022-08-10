@@ -12,10 +12,6 @@ import plotnine as gg
 jr = pd.read_csv("Data/jr_shiny.csv")
 jr = jr.astype({"year": "object", "day": "object", "hour": "object"})
 
-# rstats = pd.read_csv('rstats_hashtag.csv')
-# rstats = rstats.filter(['screen_name', 'created_at', 'text', 'favorite_count',
-#                        'retweet_count'])
-
 choices_select = {"year": "Year", "day": "Day", "hour": "Hour", "media_type": "Media"}
 choices_check = {
     "created_at": "Date",
@@ -72,7 +68,7 @@ def server(input, output, session):
                 type="qual",
                 palette="Dark2",
                 name="Interaction",
-                labels=(["Favourite Count", "Retweet Count"]),
+                labels=(["Like", "Retweet"]),
             )
             + gg.theme_classic()
         )
@@ -86,17 +82,15 @@ def server(input, output, session):
     @output
     @render.text
     def text():
-        if (
-            input.cols() == ()
-            or input.num() == 0
-            or input.num() < 0
-            or input.num() > 50
-        ):
-            return ""
-        elif input.num() == 1:
-            return "Displaying the most recent @jumping_uk tweet:"
+        if isinstance(input.num(), int) is True:
+            if input.cols() == () or input.num() <= 0 or input.num() > 50:
+                return ""
+            elif input.num() == 1:
+                return "Displaying the most recent @jumping_uk tweet:"
+            else:
+                return f"Displaying the {input.num()} most recent @jumping_uk tweets:"
         else:
-            return f"Displaying the {input.num()} most recent @jumping_uk tweets:"
+            return None
 
     @output
     @render.table
@@ -113,10 +107,13 @@ def server(input, output, session):
         )
         pd.set_option("colheader_justify", "left")
         first_n = cols.head(input.num())
-        if input.num() == 0 or input.num() < 0 or input.num() > 50:
-            return None
+        if isinstance(input.num(), int) == True:
+            if input.num() == 0 or input.num() < 0 or input.num() > 50:
+                return None
+            else:
+                return first_n
         else:
-            return first_n
+            return None
 
 
 app = App(app_ui, server)
