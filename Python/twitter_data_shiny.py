@@ -107,7 +107,7 @@ def server(input, output, session):
         pd.set_option("colheader_justify", "left")
         first_n = cols.head(input.num())
         if isinstance(input.num(), int) == True:
-            if input.num() == 0 or input.num() < 0 or input.num() > 50:
+            if input.num() <= 0 or input.num() > 50:
                 return None
             else:
                 return first_n
