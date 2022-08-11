@@ -21,7 +21,6 @@ choices_check = {
 }
 
 app_ui = ui.page_fluid(
-    ui.panel_title("@jumping_uk Twitter Data"),
     ui.layout_sidebar(
         ui.panel_sidebar(
             ui.input_select(
