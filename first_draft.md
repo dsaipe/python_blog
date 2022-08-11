@@ -31,7 +31,7 @@ The [@jumping_uk](https://www.twitter.com/jumping_uk) Twitter project accounted 
 
 You will now know that Shiny apps consist of a **user interface (UI)** and a **server function**. We will go through developing these one at a time. If you haven't already, you will need to install Shiny before we begin. 
 
-```{bash}
+```
 pip install shiny
 ```
 
@@ -39,7 +39,7 @@ pip install shiny
 
 First, we will create the user interface. The UI takes a range of input and output functions, and defines what users will see when they visit the dashboard. 
 
-```{python}
+```python
 from shiny import ui
 ```
 
@@ -51,7 +51,7 @@ We then want to choose a `ui.layout_*` function which determines the layout of o
 
 This is what we have so far:
 
-```{python}
+```python
 app_ui = ui.page_fluid(
     ui.layout_sidebar(
         ui.panel_sidebar(),
@@ -80,7 +80,7 @@ Many functions will have additional arguments, such as `min` and `max` values fo
 
 As is with the layout and panel functions, remember to include commas between your input functions and output functions. Our UI is now complete!
 
-```{python}
+```python
 app_ui = ui.page_fluid(
     ui.panel_title("@jumping_uk Twitter Data"),
     ui.layout_sidebar(
@@ -113,7 +113,7 @@ app_ui = ui.page_fluid(
 ```
 
 ## Server Function
-```{python}
+```python
 from shiny import render 
 ```
 
@@ -123,7 +123,7 @@ We can now design our outputs in the server function. I have used [`pandas`](htt
 
 Having done all this, our server function is as follows. 
 
-```{python}
+```python
 import pandas as pd
 import plotnine as gg
 
@@ -182,19 +182,19 @@ def server(input, output, session):
 
 ## Finishing Touches
 
-```{python}
+```python
 from shiny import App
 ```
 
 We now combine our UI and server to create our app. The object must be named 'app' for it to run. 
 
-```{python}
+```python
 app = App(app_ui, server)
 ```
 
 We can then run our app.
 
-```{bash}
+```
 shiny run --reload twitter_data_shiny.py
 ```
 
