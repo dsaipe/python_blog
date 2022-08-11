@@ -19,21 +19,25 @@ except:
 
 # Introduction 
 
-As someone who has zero experience using the [Shiny framework in R](https://shiny.rstudio.com/), the recent announcement that the framework had been made available to Python users inspired an opportunity for me to learn a new concept from a different perspective to most of my colleagues. I have been tasked with writing a Python related blog post, and having spent the past few weeks carrying out an analysis of Jumping Rivers' Twitter data ([@jumping_uk](https://www.twitter.com/jumping_uk)), creating a dashboard to display some of my findings and then writing about it seemed like a nice way to cap off my 6-week summer placement at Jumping Rivers. 
+As someone who has zero experience using [Shiny in R](https://shiny.rstudio.com/), the recent announcement that the framework had been made available to Python users inspired an opportunity for me to learn a new concept from a different perspective to most of my colleagues. I have been tasked with writing a Python related blog post, and having spent the past few weeks carrying out an analysis of Jumping Rivers' Twitter data ([@jumping_uk](https://www.twitter.com/jumping_uk)), creating a dashboard to display some of my findings and then writing about it seemed like a nice way to cap off my 6-week summer placement at Jumping Rivers. 
 
-This post will take you through some of the source code for my dashboard whilst I provide a bit of context for the Twitter project itself. For a more bare-bones tutorial on using [Shiny for Python](https://shiny.rstudio.com/py/), you can check out another recent Jumping Rivers blog post [here](https://www.jumpingrivers.com/blog/). I suggest reading this first. 
+This post will take you through some of the source code for the dashboard I created whilst I provide a bit of context for the Twitter project itself. For a more bare-bones tutorial on using [Shiny for Python](https://shiny.rstudio.com/py/), you can check out another recent Jumping Rivers blog post [here](https://www.jumpingrivers.com/blog/). I suggest reading this first. 
 
 ## Twitter Project Background
 
-The [@jumping_uk](https://www.twitter.com/jumping_uk) Twitter analysis project accounted for the first half of my time at Jumping Rivers. The aim of the project was to look into some of the factors that may (or may not) have been affecting levels of engagement with [@jumping_uk](https://www.twitter.com/jumping_uk) tweets. The project also looked at the locations of Twitter users that [@jumping_uk](https://www.twitter.com/jumping_uk) tweets are reaching and who is interacting with them. The data used in this project was acquired using {rtweet}, an R package designed to collect data via Twitter's API.`.
+The [@jumping_uk](https://www.twitter.com/jumping_uk) Twitter project accounted for the first half of my time at Jumping Rivers. The aim of the project was to look into some of the factors that may (or may not) have been affecting levels of engagement with [@jumping_uk](https://www.twitter.com/jumping_uk) tweets. The project also looked at the locations of Twitter users that [@jumping_uk](https://www.twitter.com/jumping_uk) tweets are reaching and who is interacting with them. The data used in this project was acquired using {[rtweet](https://cran.r-project.org/web/packages/rtweet/rtweet.pdf)}, an R package designed to collect data via Twitter's API.
 
 # Creating a Dashboard
 
-You will now know that Shiny apps consist of a **user interface (UI)**, and a **server function**. We will go through developing these one at a time. 
+You will now know that Shiny apps consist of a **user interface (UI)** and a **server function**. We will go through developing these one at a time. If you haven't already, you will need to install Shiny before we begin. 
+
+```{bash}
+pip install shiny
+```
 
 ## User Interface 
 
-First, we need to create the user interface. The UI takes a range of input and output functions, and defines what users will see when they visit the dashboard. 
+First, we will create the user interface. The UI takes a range of input and output functions, and defines what users will see when they visit the dashboard. 
 
 ```{python}
 from shiny import ui
@@ -167,10 +171,13 @@ def server(input, output, session):
         )
         pd.set_option("colheader_justify", "left")
         first_n = cols.head(input.num())
-        if input.num() == 0 or input.num() < 0 or input.num() > 50:
-            return None
+        if isinstance(input.num(), int) == True:
+            if input.num() == 0 or input.num() < 0 or input.num() > 50:
+                return None
+            else:
+                return first_n
         else:
-            return first_n
+            return None
 ```
 
 ## Finishing Touches
