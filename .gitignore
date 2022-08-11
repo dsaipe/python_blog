@@ -2,3 +2,4 @@
 .vscode
 requirements.txt
 __pycache__
+manifest.json
