@@ -232,6 +232,6 @@ The `run` command will preview our app, and `--reload` will reload the app whene
 
 The arrival of Shiny to Python will open up the framework to a whole new cohort of users, myself included! Whilst I have found grasping the basic concepts to be relatively straightforward, I have found learning resources to be pretty much limited to the [API](https://shiny.rstudio.com/py/api/). Advancing past the core concepts may be more challenging, particularly (I imagine) for users with no experience in [Shiny for R](https://shiny.rstudio.com/), due to the lack of online reading material. We can also expect changes to be made in the coming months, with [Shiny for Python](https://shiny.rstudio.com/py/) currently being in Alpha. However, with Shiny being such a popular framework amongst R users, the expansion of it to Python is very exciting, and I look forward to seeing how it develops in the future. 
 
-[View and edit the dashboard I created](insert-link-here)
+[View the dashboard I created](insert-link-here)
 
 [Download the data I used](Python/jr_shiny.csv)
