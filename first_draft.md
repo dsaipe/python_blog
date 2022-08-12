@@ -1,20 +1,21 @@
 ---
-title:
-shortTitle:
+title: "Shiny for Python: Creating a simple Twitter analytics dashboard"
+shortTitle: "Creating a Shiny Python Twitter dashboard"
 author: David Saipe
-date: 
-slug: 
+date: "2022-08-12"
+slug: "shiny-python-twitter"
 output:
   html_document:
-featuredImage:
-headerImage:
+featuredImage: "/Images/shiny_for_python.png"
+headerImage: "/Images/shiny_for_python.png"
 tags:
   - "python"
   - "shiny"
   - "dashboard"
   - "pybloggers"
 layout: blog-single
-except:
+excerpt: |
+    The arrival of Shiny for Python was announced at the RStudio Conference a few weeks ago. In this tutorial I will take you through how I created a simple Shiny for Python dashboard, with no experience using the framework in R. 
 ---
 
 # Introduction 
