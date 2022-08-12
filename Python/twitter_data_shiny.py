@@ -81,7 +81,7 @@ def server(input, output, session):
     @output
     @render.text
     def text():
-        if isinstance(input.num(), int) is True:
+        if isinstance(input.num(), int):
             if input.cols() == () or input.num() <= 0 or input.num() > 50:
                 return ""
             elif input.num() == 1:
@@ -106,7 +106,7 @@ def server(input, output, session):
         )
         pd.set_option("colheader_justify", "left")
         first_n = cols.head(input.num())
-        if isinstance(input.num(), int) == True:
+        if isinstance(input.num(), int):
             if input.num() <= 0 or input.num() > 50:
                 return None
             else:

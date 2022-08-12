@@ -29,10 +29,10 @@ The [@jumping_uk](https://www.twitter.com/jumping_uk) Twitter project accounted 
 
 # Creating a Dashboard
 
-You will now know that Shiny apps consist of a **user interface (UI)** and a **server function**. We will go through developing these one at a time. If you haven't already, you will need to install Shiny before we begin. 
+You will now know that Shiny apps consist of a **user interface (UI)** and a **server function**. We will go through developing these one at a time. If you haven't already, you will need to install Shiny and any other dependencies before we begin. 
 
 ```
-pip install shiny
+pip install shiny pandas plotnine Jinja2
 ```
 
 ## User Interface 
@@ -55,7 +55,7 @@ This is what we have so far:
 app_ui = ui.page_fluid(
     ui.layout_sidebar(
         ui.panel_sidebar(),
-        ui.panel_main()
+        ui.panel_main(),
     )
 )
 ```
@@ -69,9 +69,9 @@ Now, we are going to put some input and output functions into our UI. These foll
 
 Simple, right? 
 
-For my Twitter dashboard, I want a plot that will show how different factors affect the number of interactions a tweet receives. I also want a table that will show the most recent tweets posted by [@jumping_uk](https://www.twitter.com/jumping_uk). For this, I will be using `ui.output_plot()` and `ui.output_table()` respectively - like I said, guessable. The only argument required for an output function is the `id`, which we will call later, in the server function. 
+For my Twitter dashboard, I want a plot that will show how different factors affect the number of interactions a tweet receives. I also want a table that will show the most recent tweets posted by [@jumping_uk](https://www.twitter.com/jumping_uk). Above the table, I want to have a piece of text saying how many tweets are being viewed. For this, I will be using `ui.output_plot()`, `ui.output_table()`, and `ui.output_text()` respectively - like I said, guessable. The only argument required for an output function is the `id`, which we will call later, in the server function. 
 
-Now we will choose some inputs. I want the user to be able to change the x-axis variable on the plot so they can see how each factor affects interactions. For this, I'll use `ui.input_select()`. This gives a drop down menu where the user will choose one option. I'll also add `ui.input_numeric()`, so the user can choose how many tweets they want to see in the table. We can also use `ui.input_checkbox_group()` so the user can choose which factors they want to see in the table. This input I'll wrap in `ui.panel_conditional()`, so that it only appears if a certain condition is satisfied (in our case if the user choses to view any tweets at all). All input functions require:
+Now we will choose some inputs. I want the user to be able to change the x-axis variable on the plot so they can see how each factor affects interactions. For this, I'll use `ui.input_select()`. This gives a drop down menu where the user will choose one option. I'll also add `ui.input_numeric()`, so the user can choose how many tweets they want to see in the table. We can also use `ui.input_checkbox_group()` so the user can choose which factors they want to see in the table. This input I'll wrap in `ui.panel_conditional()`, so that it only appears if a certain condition is satisfied (in our case if the user chooses to view any tweets at all). All input functions require:
 
   - `id`: which we will use to call our inputs in the server function  
   - `label`: what the input will be labelled as to the viewer.  
@@ -81,6 +81,18 @@ Many functions will have additional arguments, such as `min` and `max` values fo
 As is with the layout and panel functions, remember to include commas between your input functions and output functions. Our UI is now complete!
 
 ```python
+choices_select = {
+    "year": "Year", 
+    "day": "Day", 
+    "hour": "Hour", 
+    "media_type": "Media"}
+choices_check = {
+    "created_at": "Date",
+    "text": "Text",
+    "retweet_count": "Retweets",
+    "favorite_count": "Likes",
+}
+
 app_ui = ui.page_fluid(
     ui.panel_title("@jumping_uk Twitter Data"),
     ui.layout_sidebar(
@@ -156,6 +168,20 @@ def server(input, output, session):
             )
         else:
             return plot
+
+    @output
+    @render.text
+    def text():
+        if isinstance(input.num(), int):
+            if input.cols() == () or input.num() <= 0 or input.num() > 50:
+                return ""
+            elif input.num() == 1:
+                return "Displaying the most recent @jumping_uk tweet:"
+            else:
+                return f"Displaying the {input.num()} most recent @jumping_uk tweets:"
+        else:
+            return None
+
     @output
     @render.table
     def table():
@@ -171,7 +197,7 @@ def server(input, output, session):
         )
         pd.set_option("colheader_justify", "left")
         first_n = cols.head(input.num())
-        if isinstance(input.num(), int) == True:
+        if isinstance(input.num(), int):
             if input.num() <= 0 or input.num() > 50:
                 return None
             else:
