@@ -1,6 +1,5 @@
 ---
 title: "Shiny for Python: Creating a simple Twitter analytics dashboard"
-shortTitle: "Creating a Shiny Python Twitter dashboard"
 author: David Saipe
 date: "2022-08-12"
 slug: "shiny-python-twitter"
